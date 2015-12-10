@@ -4,6 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/VolleyTD.iml" filepath="$PROJECT_DIR$/VolleyTD.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/shapeloading/shapeloading.iml" filepath="$PROJECT_DIR$/shapeloading/shapeloading.iml" />
+      <module fileurl="file://$PROJECT_DIR$/shapeloading/shapeloading.iml" filepath="$PROJECT_DIR$/shapeloading/shapeloading.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libs/android-shapeLoadingView-master/shapeloading/shapeloading.iml" filepath="$PROJECT_DIR$/libs/android-shapeLoadingView-master/shapeloading/shapeloading.iml" />
     </modules>
   </component>
 </project>

@@ -1,1 +1,3 @@
-include ':app'
+include ':app', ':shapeloading'
+//project(':shapeloading').projectDir = new File('Libs/android-shapeLoadingView-master/shapeloading')
+//include ':libs:ShapeLoading'

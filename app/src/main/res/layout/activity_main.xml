@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,19 +9,29 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world"
-        android:background="#00f0f0f0"/>
+        android:background="#00f0f0f0"
+        android:text="@string/hello_world" />
+
+    <com.example.jerryyin.volleytd.widget.LoadingView
+        android:id="@+id/loading_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:loadingText="loading..."
+        android:visibility="gone">
+    </com.example.jerryyin.volleytd.widget.LoadingView>
 
     <ImageView
         android:id="@+id/img_req"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
-        android:background="#00ffff"/>
+        android:layout_weight="1"
+        android:background="#00ffff" />
 
     <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/network_image_view"
         android:layout_width="200dp"
+        android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
-        android:layout_height="wrap_content" />
+        android:layout_weight="1" />
 </LinearLayout>

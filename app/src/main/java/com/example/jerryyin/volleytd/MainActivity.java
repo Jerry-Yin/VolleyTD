@@ -1,9 +1,12 @@
 package com.example.jerryyin.volleytd;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
-import android.support.v7.app.ActionBarActivity;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.annotation.MainThread;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.android.volley.RequestQueue;
@@ -17,19 +20,28 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.jerryyin.volleytd.toolbox.BitmapCache;
 import com.example.jerryyin.volleytd.toolbox.XmlRequest;
+import com.example.jerryyin.volleytd.widget.LoadingView;
+import com.example.jerryyin.volleytd.widget.ShapeLoadingDialog;
+import com.example.jerryyin.volleytd.widget.ShapeLoadingView;
 
 import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
 
     private static String TAG = "MainActivity";
 
     private ImageView mImageReq;
+    private ShapeLoadingDialog mLoadingDailog;
+    private LoadingView mLoadingView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +50,29 @@ public class MainActivity extends ActionBarActivity {
         initView();
 //        getRQ();
 //        getStringReq();
-        getJsonReq();
+//        getJsonReq();
 //        getImageReq();
-        getImageLoader();
-        getNetworkImgView();
-        getXmlReq();
+//        getImageLoader();
+//        getNetworkImgView();
+//        getXmlReq();
+
+        //
+       Thread thread = new Thread(new Runnable() {
+           @Override
+           public void run() {
+               downloadImage();
+           }
+       });
+        thread.start();
     }
 
     private void initView() {
         mImageReq = (ImageView) findViewById(R.id.img_req);
+        mLoadingView = (LoadingView) findViewById(R.id.loading_view);
+
+        mLoadingDailog = new ShapeLoadingDialog(this);
+        mLoadingDailog.setLoadingText("loading..dialog");
+        mLoadingDailog.show();
     }
 
     /**1.普通网络请*/
@@ -137,7 +163,7 @@ public class MainActivity extends ActionBarActivity {
     /**3.ImageRequest请求图片*/
     public void getImageReq(){
         ImageRequest imageRequest = new ImageRequest(
-                "http://developer.android.com/images/home/aw_dac.png",
+                "http://g.hiphotos.baidu.com/zhidao/pic/item/4bed2e738bd4b31cb999752187d6277f9f2ff887.jpg",
                 new Response.Listener<Bitmap>() {
                     @Override
                     public void onResponse(Bitmap bitmap) {
@@ -230,6 +256,36 @@ public class MainActivity extends ActionBarActivity {
                     }
                 });
         requestQueue.add(xmlRequest);
+    }
+
+
+    /**
+     * 普通下载图片的方法，网络操作必须在线程中
+     */
+    public void downloadImage(){
+        try {
+            URL url = new URL("http://g.hiphotos.baidu.com/zhidao/pic/item/4bed2e738bd4b31cb999752187d6277f9f2ff887.jpg");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            InputStream inputStream = connection.getInputStream();
+            final Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+            connection.disconnect();
+            if (bitmap != null){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mImageReq.setImageBitmap(bitmap);
+
+                        mLoadingDailog.dismiss();
+//                        mLoadingView.setVisibility(View.GONE);
+                    }
+                });
+            }
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
